@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WasteStack — demonstração local</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="/static/vendor/leaflet/leaflet.css">
+<link rel="stylesheet" href="/static/estilo.css">
+</head>
+<body>
+<header class="topo">
+  <div class="marca"><span class="logo">WasteStack</span><span class="selo">demonstração local</span></div>
+  <div id="quem" class="quem"></div>
+</header>
+<div id="entrada" class="entrada"></div>
+<div id="app" class="app" hidden>
+  <nav id="abas" class="abas" aria-label="Seções"></nav>
+  <main class="corpo">
+    <section class="mapa-caixa">
+      <div id="mapa" aria-label="Mapa do Recife"></div>
+      <div id="legenda" class="legenda"></div>
+    </section>
+    <section id="painel" class="painel" aria-live="polite"></section>
+  </main>
+</div>
+<div id="aviso" class="aviso" role="status" hidden></div>
+<script src="/static/vendor/leaflet/leaflet.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

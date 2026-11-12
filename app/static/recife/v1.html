@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* WasteStack: bibliotecas do runtime servidas localmente (mesmas versões do design) */window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"vendor/react-dom.production.min.js","https://unpkg.com/@babel/standalone@7.29.0/babel.min.js":"vendor/babel.min.js"};</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-54d87b73-db22-44c3-860e-abe238760f8a/styles.css">
+<script src="_ds/organic-54d87b73-db22-44c3-860e-abe238760f8a/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-bg)}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+input[type=range]{accent-color:var(--color-accent)}
+</style>
+</helmet>
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="01 Login" style="min-height:100vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));background:var(--color-bg)">
+  <div style="position:relative;overflow:hidden;background:var(--color-accent-2-700);color:var(--color-bg);padding:calc(var(--space-8)*1.5);display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-8);min-height:420px">
+    <div style="position:absolute;width:420px;height:420px;border-radius:50%;background:var(--color-accent-2-600);right:-140px;top:-120px"></div>
+    <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:var(--color-accent);right:-60px;bottom:-70px"></div>
+    <div style="position:absolute;width:64px;height:64px;border-radius:50%;background:var(--color-accent-300);right:150px;bottom:40px"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--color-bg);display:grid;place-items:center">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--color-accent)"></div>
+      </div>
+      <span style="font-family:var(--font-heading);font-size:20px">Recife em Dados</span>
+    </div>
+    <div style="position:relative;z-index:1;max-width:440px;margin-bottom:var(--space-8)">
+      <h1 style="font-size:48px;margin:0 0 var(--space-3);text-wrap:pretty">Dados públicos que se explicam sozinhos.</h1>
+      <p style="font-size:17px;margin:0;opacity:.92;text-wrap:pretty">Em vez de planilhas, gráficos prontos sobre limpeza urbana, drenagem e território do Recife.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;padding:calc(var(--space-8)*1.5)">
+    <form onSubmit="{{ submit }}" style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:var(--space-4)">
+      <div>
+        <h2 style="margin:0 0 6px">Entrar</h2>
+        <p class="text-muted" style="margin:0">Escolha seu perfil de acesso.</p>
+      </div>
+      <div class="seg" style="display:flex">
+        <label class="seg-opt" style="flex:1;justify-content:center;padding:10px 12px;font-size:14px"><input type="radio" name="perfil" checked="{{ isGestor }}" onChange="{{ pickGestor }}"></input>Gestor</label>
+        <label class="seg-opt" style="flex:1;justify-content:center;padding:10px 12px;font-size:14px"><input type="radio" name="perfil" checked="{{ isCidadao }}" onChange="{{ pickCidadao }}"></input>Cidadão</label>
+      </div>
+      <p class="text-muted" style="margin:-6px 0 0;font-size:13px">{{ roleHint }}</p>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input id="email" class="input" type="email" placeholder="seu@email.com" value="{{ email }}" onChange="{{ setEmail }}" style="min-height:44px"></input>
+      </div>
+      <div class="field">
+        <label for="senha">Senha</label>
+        <input id="senha" class="input" type="password" placeholder="••••••••" value="{{ senha }}" onChange="{{ setSenha }}" style="min-height:44px"></input>
+      </div>
+      <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+        <div class="tag tag-accent" style="font-size:13px;padding:8px 14px;align-self:flex-start">{{ error }}</div>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        <button type="submit" class="btn btn-primary" style="min-height:46px;font-size:16px">Entrar como {{ roleLabel }}</button>
+        <button type="button" class="btn btn-ghost" onClick="{{ fillDemo }}" style="align-self:flex-start;white-space:nowrap">Usar acesso de demonstração</button>
+      </div>
+    </form>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="02 Dados públicos" style="min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr);background:var(--color-bg)">
+
+  <aside style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:var(--space-6);padding:var(--space-6) var(--space-4);background:var(--color-surface)">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--color-accent-2-700);display:grid;place-items:center">
+        <div style="width:12px;height:12px;border-radius:50%;background:var(--color-accent-300)"></div>
+      </div>
+      <span style="font-family:var(--font-heading);font-size:18px">Recife em Dados</span>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:0 12px 6px" class="text-muted">Páginas</span>
+      <a href="#" onClick="{{ goResumo }}" aria-current="page" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:999px;background:var(--color-accent);color:var(--color-bg);text-decoration:none;font-weight:600;font-size:14px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        Dados públicos
+      </a>
+    </nav>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-bg)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--color-accent-200);color:var(--color-accent-800);display:grid;place-items:center;font-weight:700">{{ initial }}</div>
+        <div style="display:flex;flex-direction:column;min-width:0">
+          <span style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis">{{ userName }}</span>
+          <span class="text-muted" style="font-size:12px">{{ roleLabel }}</span>
+        </div>
+      </div>
+      <button class="btn btn-secondary" onClick="{{ logout }}" style="justify-content:flex-start">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg>
+        Sair
+      </button>
+    </div>
+  </aside>
+
+  <main style="min-width:0;padding:var(--space-8) calc(var(--space-8)*1.25) calc(var(--space-8)*2);display:flex;flex-direction:column;gap:var(--space-6)">
+    <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-4)">
+      <div style="flex:1 1 420px;max-width:760px">
+        <span class="tag tag-accent-2">Dados públicos · Recife · 2014–2026</span>
+        <h1 style="margin:var(--space-3) 0 var(--space-2);text-wrap:pretty">O que os dados dizem sobre a limpeza da cidade</h1>
+        <p class="text-muted" style="margin:0;font-size:16px;text-wrap:pretty">32 achados de prefeitura, IBGE, Central 156 e Defesa Civil, organizados em 8 temas. Cada gráfico responde uma pergunta.</p>
+      </div>
+      <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}">
+        <button class="btn btn-secondary" onClick="{{ exportar }}" style="white-space:nowrap">{{ exportLabel }}</button>
+      </sc-if>
+    </header>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-2)">
+      <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="9">
+        <button onClick="{{ t.onClick }}" style="flex:none;white-space:nowrap;font-family:var(--font-body);font-size:14px;font-weight:600;padding:9px 16px;border-radius:999px;cursor:pointer;border:1px solid {{ t.border }};background:{{ t.bg }};color:{{ t.fg }}">{{ t.label }}</button>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ tabResumo }}" hint-placeholder-val="{{ true }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <p class="text-muted" style="margin:0">Um número por tema. Clique para ver os gráficos.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:var(--space-4)">
+          <button onClick="{{ goTerritorio }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Território e população</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">1,49 mi</span>
+            <span class="card-body">moradores em 94 bairros, todos casados com o Censo 2022.</span>
+          </button>
+          <button onClick="{{ goCentral }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Central 156</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">91 dias</span>
+            <span class="card-body">é a mediana para atender drenagem. Lixo leva 8.</span>
+          </button>
+          <button onClick="{{ goAgua }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Água e rios</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">13%</span>
+            <span class="card-body">da área dos bairros é faixa de proteção de rio.</span>
+          </button>
+          <button onClick="{{ goMorros }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Morros e Defesa Civil</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">90%</span>
+            <span class="card-body">das 163 mil ações da Defesa Civil foram em regionais de morro.</span>
+          </button>
+          <button onClick="{{ goColeta }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Coleta, redes e comunidades</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">47,7%</span>
+            <span class="card-body">dos hexágonos da cidade não têm coleta seletiva.</span>
+          </button>
+          <button onClick="{{ goDescarte }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Onde descartar</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">473</span>
+            <span class="card-body">hexágonos ficam longe de qualquer ponto de descarte.</span>
+          </button>
+          <button onClick="{{ goFeiras }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Feiras e orçamento</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">R$ 309 mi</span>
+            <span class="card-body">previstos para limpeza urbana em 2024.</span>
+          </button>
+          <button onClick="{{ goCobertura }}" class="card" style="text-align:left;border:0;cursor:pointer;font:inherit;color:inherit;padding:var(--space-6)" style-hover="background:var(--color-accent-100)">
+            <span class="card-kicker">Cobertura e prioridade</span>
+            <span style="font-family:var(--font-heading);font-size:40px;line-height:1">0,08</span>
+            <span class="card-body">de correlação entre carência do bairro e reclamações.</span>
+          </button>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabTerritorio }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Território e população</h2>
+          <p class="text-muted" style="margin:0">A base: quem mora onde, e como a cidade foi dividida para comparar lugares do mesmo tamanho.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 10 e 11</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-4);grid-column:1/-1">
+            <span class="card-kicker">A cidade em números</span>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:var(--space-4)">
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">94</div><div class="text-muted" style="font-size:13px">bairros</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">1.488.920</div><div class="text-muted" style="font-size:13px">moradores (Censo 2022)</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">1.943</div><div class="text-muted" style="font-size:13px">hexágonos de ~0,1 km²</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1;color:var(--color-accent-2-700)">0</div><div class="text-muted" style="font-size:13px">moradores perdidos no cruzamento</div></div>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Limites oficiais</span>
+            <span class="card-title" style="font-size:20px">IBGE e prefeitura quase coincidem</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--font-heading);font-size:48px;line-height:1">99,8%</span><span class="text-muted" style="font-size:13px">de sobreposição</span></div>
+            <div style="height:14px;border-radius:999px;background:var(--color-accent-200)"><div style="width:99.8%;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div>
+            <p class="card-body">As maiores diferenças ficam na beira-mar:</p>
+            <div style="display:flex;flex-wrap:wrap;gap:6px"><span class="tag tag-accent">Boa Viagem</span><span class="tag tag-accent">Bairro do Recife</span><span class="tag tag-accent">Brasília Teimosa</span></div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Plano de limpeza</span>
+            <span class="card-title" style="font-size:20px">Onde o serviço é mais fraco</span>
+            <p class="card-body" style="flex:0">% das faces de quadra</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:4px 10px;font-size:13px"><span>Sem galeria registrada</span><strong style="text-align:right">69%</strong><div style="grid-column:1/-1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:69%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:4px 10px;font-size:13px"><span>Limpeza mensal ou nenhuma</span><strong style="text-align:right">28%</strong><div style="grid-column:1/-1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:28%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 48px;gap:4px 10px;font-size:13px"><span>Coleta manual</span><strong style="text-align:right">24%</strong><div style="grid-column:1/-1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:24%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3);background:var(--color-accent-2-200)">
+            <span class="card-kicker" style="color:var(--color-accent-2-800)">Qualidade do cadastro</span>
+            <span style="font-family:var(--font-heading);font-size:48px;line-height:1;color:var(--color-accent-2-800)">14 “ruas”</span>
+            <p class="card-body" style="opacity:1;color:var(--color-accent-2-900)">cadastradas pela prefeitura são, na verdade, rios. Antes de mapear chamados por rua, o dado precisa ser limpo.</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabCentral }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Central 156</h2>
+          <p class="text-muted" style="margin:0">Chamados de jan/2024 a jun/2026: o que a população pede, quanto demora e onde se repete.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 12 e 21</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-4);grid-column:1/-1">
+            <span class="card-kicker">Do total ao recorte</span>
+            <span class="card-title" style="font-size:20px">Um em cada quatro chamados é sobre lixo, vias ou drenagem</span>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span>Todas as demandas</span><strong>230.491</strong></div>
+              <div style="height:28px;border-radius:999px;background:var(--color-neutral-300);display:flex;overflow:hidden"><div style="width:26.8%;background:var(--color-accent)"></div></div>
+              <div style="display:flex;justify-content:space-between;font-size:13px"><span style="color:var(--color-accent-700);font-weight:600">Lixo, vias e drenagem · 26,8%</span><strong>61.790</strong></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px">
+                <div style="width:48.3%;background:var(--color-accent)"></div>
+                <div style="width:32.1%;background:var(--color-accent-2-600)"></div>
+                <div style="width:19.6%;background:var(--color-accent-2-800)"></div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:var(--space-4);font-size:13px">
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent)"></i>Lixo e descarte <strong>29.874</strong></span>
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent-2-600)"></i>Limpeza de vias <strong>19.816</strong></span>
+                <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent-2-800)"></i>Limpeza de drenagem <strong>12.100</strong></span>
+              </div>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Tempo de atendimento</span>
+            <span class="card-title" style="font-size:20px">Drenagem demora 11× mais que lixo</span>
+            <p class="card-body" style="flex:0">Mediana, em dias</p>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 60px;align-items:center;gap:10px;font-size:13px"><span>Lixo</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:8.8%;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div><strong style="text-align:right">8</strong></div>
+              <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 60px;align-items:center;gap:10px;font-size:13px"><span>Limpeza de vias</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:59.3%;height:100%;border-radius:999px;background:var(--color-accent-500)"></div></div><strong style="text-align:right">54</strong></div>
+              <div style="display:grid;grid-template-columns:120px minmax(0,1fr) 60px;align-items:center;gap:10px;font-size:13px"><span>Drenagem</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:100%;height:100%;border-radius:999px;background:var(--color-accent-700)"></div></div><strong style="text-align:right">91</strong></div>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Localização</span>
+            <span class="card-title" style="font-size:20px">Endereço resgata o que a coordenada perde</span>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:4px 10px;font-size:13px"><span>Chamados com coordenada</span><strong style="text-align:right">29,8%</strong><div style="grid-column:1/-1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:29.8%;height:100%;border-radius:999px;background:var(--color-neutral-500)"></div></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:4px 10px;font-size:13px"><span>Mapeados por rua + bairro</span><strong style="text-align:right">94,2%</strong><div style="grid-column:1/-1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:94.2%;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div></div>
+            </div>
+            <p class="card-body">Para lixo, vias e drenagem.</p>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Recorrência</span>
+            <span class="card-title" style="font-size:20px">O problema volta ao mesmo lugar</span>
+            <div style="display:flex;align-items:center;gap:var(--space-4)">
+              <div style="width:120px;height:120px;flex:none;border-radius:50%;background:conic-gradient(var(--color-accent) 0 93.4%,var(--color-accent-200) 0);display:grid;place-items:center">
+                <div style="width:78px;height:78px;border-radius:50%;background:var(--color-surface);display:grid;place-items:center;font-family:var(--font-heading);font-size:20px">93,4%</div>
+              </div>
+              <p class="card-body" style="margin:0">dos chamados de 2026 caíram em ruas que já tinham chamado antes.</p>
+            </div>
+            <div style="display:flex;align-items:baseline;gap:8px;padding-top:var(--space-2)"><span style="font-family:var(--font-heading);font-size:32px;line-height:1">88 ruas</span><span class="text-muted" style="font-size:13px">com chamado em 20+ dos 25 meses</span></div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Fila de drenagem · 19/06/2026</span>
+            <span class="card-title" style="font-size:20px">9.955 pedidos esperando</span>
+            <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px">
+              <div style="width:26.2%;background:var(--color-accent)"></div>
+              <div style="width:73.8%;background:var(--color-accent-800)"></div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:6px;font-size:13px">
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent)"></i>Abertos <strong>2.612</strong></span>
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent-800)"></i>Parados desde 2024–2025, sem movimento <strong>7.343</strong></span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabAgua }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Água e rios</h2>
+          <p class="text-muted" style="margin:0">Quanto da cidade é margem de rio, e se os chamados se concentram ali.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 13 e 26</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Faixas de proteção</span>
+            <span class="card-title" style="font-size:20px">13 de cada 100 m² dos bairros são margem de rio</span>
+            <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;max-width:240px">
+              <sc-for list="{{ waffle }}" as="w" hint-placeholder-count="100">
+                <div style="aspect-ratio:1;border-radius:50%;background:{{ w.bg }}"></div>
+              </sc-for>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Chamados na beira dos rios</span>
+            <span class="card-title" style="font-size:20px">Só drenagem aparece acima do esperado</span>
+            <p class="card-body" style="flex:0">1,0 = chamados proporcionais ao tamanho da área</p>
+            <div style="position:relative;display:flex;flex-direction:column;gap:14px;padding:6px 0">
+              <div style="display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;gap:10px;font-size:13px">
+                <span>Lixo</span>
+                <div style="position:relative;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)">
+                  <div style="width:56.7%;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div>
+                  <div style="position:absolute;left:66.7%;top:-6px;bottom:-6px;width:2px;background:var(--color-text)"></div>
+                  <strong style="position:absolute;left:calc(56.7% - 40px);top:-20px;font-size:12px">0,85</strong>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:90px minmax(0,1fr);align-items:center;gap:10px;font-size:13px;margin-top:10px">
+                <span>Drenagem</span>
+                <div style="position:relative;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)">
+                  <div style="width:80%;height:100%;border-radius:999px;background:var(--color-accent)"></div>
+                  <div style="position:absolute;left:66.7%;top:-6px;bottom:-6px;width:2px;background:var(--color-text)"></div>
+                  <strong style="position:absolute;left:calc(80% + 6px);top:-20px;font-size:12px">1,20</strong>
+                </div>
+              </div>
+              <div style="display:grid;grid-template-columns:90px minmax(0,1fr);gap:10px;font-size:11px"><span></span><span class="text-muted" style="padding-left:calc(66.7% - 32px)">esperado (1,0)</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabMorros }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Morros e Defesa Civil</h2>
+          <p class="text-muted" style="margin:0">Onde a Defesa Civil atua, o que ela registra e o que esse dado não consegue dizer.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 15 e 22</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Ações 2023–2024</span>
+            <span class="card-title" style="font-size:20px">163 mil ações, quase todas no morro</span>
+            <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px">
+              <div style="width:90%;background:var(--color-accent-700)"></div>
+              <div style="width:10%;background:var(--color-neutral-400)"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span>Regionais de morro <strong>90%</strong></span><span>Demais <strong>10%</strong></span></div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Risco máximo</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">864</div><div class="text-muted" style="font-size:13px">ruas chegaram ao grau R4</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">6,9 mi</div><div class="text-muted" style="font-size:13px">m² de lona distribuídos</div></div>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Classificação do relevo</span>
+            <span class="card-title" style="font-size:20px">39% dos hexágonos ficaram sem rótulo</span>
+            <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px">
+              <div style="width:32.6%;background:var(--color-accent)"></div>
+              <div style="width:28.1%;background:var(--color-accent-2-600)"></div>
+              <div style="width:39.3%;background:repeating-linear-gradient(45deg,var(--color-neutral-300) 0 6px,var(--color-neutral-400) 6px 12px)"></div>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--space-4);font-size:13px">
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent)"></i>Morro <strong>634</strong></span>
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent-2-600)"></i>Planície <strong>546</strong></span>
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-neutral-400)"></i>Indefinido <strong>763</strong></span>
+            </div>
+            <p class="card-body">“Indefinido” por falta de evidência, não por erro.</p>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3);background:var(--color-accent-200)">
+            <span class="tag tag-accent" style="align-self:flex-start;background:var(--color-bg)">Ressalva</span>
+            <span class="card-title" style="font-size:20px;color:var(--color-accent-900)">Não é um mapa de alagamentos</span>
+            <p class="card-body" style="opacity:1;color:var(--color-accent-900)">A maioria das ações é social e de monitoramento. Alagamento aparece em só <strong>203 registros</strong>, em <strong>17 dias</strong> — cerca de 0,1% do total.</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabColeta }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Coleta, redes e comunidades</h2>
+          <p class="text-muted" style="margin:0">Que serviço chega a cada lugar: coleta, drenagem, esgoto.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 16 e 17</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Setores de coleta</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">154</div><div class="text-muted" style="font-size:13px">coleta regular</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">60</div><div class="text-muted" style="font-size:13px">coleta seletiva</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:4px 10px;font-size:13px;padding-top:var(--space-2)"><span>Hexágonos sem coleta seletiva</span><strong style="text-align:right">47,7%</strong><div style="grid-column:1/-1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:47.7%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Dias alternados</span>
+            <span class="card-title" style="font-size:20px">Metade dos pedidos nasce em dia sem coleta</span>
+            <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px">
+              <div style="width:50.6%;background:var(--color-accent)"></div>
+              <div style="width:49.4%;background:var(--color-accent-2-500)"></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:13px"><span>Dia sem coleta <strong>50,6%</strong></span><span>Dia com coleta <strong>49,4%</strong></span></div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Redes cadastradas</span>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:80px minmax(0,1fr) 72px;align-items:center;gap:10px;font-size:13px"><span>Drenagem</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:100%;height:100%;border-radius:999px;background:var(--color-accent-2-700)"></div></div><strong style="text-align:right">1.058 km</strong></div>
+              <div style="display:grid;grid-template-columns:80px minmax(0,1fr) 72px;align-items:center;gap:10px;font-size:13px"><span>Esgoto</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:74.1%;height:100%;border-radius:999px;background:var(--color-accent-2-500)"></div></div><strong style="text-align:right">784 km</strong></div>
+            </div>
+            <div style="display:flex;align-items:center;gap:var(--space-3);padding-top:var(--space-2)">
+              <div style="width:64px;height:64px;flex:none;border-radius:50%;background:conic-gradient(var(--color-accent) 0 56%,var(--color-accent-200) 0)"></div>
+              <p class="card-body" style="margin:0">Na <strong>RPA 3</strong>, <strong>56%</strong> dos hexágonos urbanos não têm drenagem cadastrada.</p>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Comunidades de Interesse Social · 2014</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">545</div><div class="text-muted" style="font-size:13px">comunidades</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">~818 mil</div><div class="text-muted" style="font-size:13px">moradores estimados</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:4px 10px;font-size:13px;padding-top:var(--space-2)"><span>Com déficit de coleta de lixo</span><strong style="text-align:right">211</strong><div style="grid-column:1/-1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:38.7%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabDescarte }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Onde descartar</h2>
+          <p class="text-muted" style="margin:0">184 locais públicos, juntando três listas. O que cada um recebe, e quem fica longe.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 14 e 24</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">O que cada local recebe</span>
+            <span class="card-title" style="font-size:20px">Reciclável é fácil; o resto, quase impossível</span>
+            <p class="card-body" style="flex:0">Nº de locais, de 184</p>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 36px;align-items:center;gap:10px;font-size:13px"><span>Recicláveis</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:57.6%;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div><strong style="text-align:right">106</strong></div>
+              <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 36px;align-items:center;gap:10px;font-size:13px"><span>Entulho</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:10.9%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div><strong style="text-align:right">20</strong></div>
+              <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 36px;align-items:center;gap:10px;font-size:13px"><span>Pilhas</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:2.7%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div><strong style="text-align:right">5</strong></div>
+              <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 36px;align-items:center;gap:10px;font-size:13px"><span>Lâmpadas</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:0.5%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-700)"></div></div><strong style="text-align:right">1</strong></div>
+              <div style="display:grid;grid-template-columns:110px minmax(0,1fr) 36px;align-items:center;gap:10px;font-size:13px"><span>Medicamentos</span><div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:0.5%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-700)"></div></div><strong style="text-align:right">1</strong></div>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Ecoestações</span>
+            <span class="card-title" style="font-size:20px">7 das 20 não estão no mapa</span>
+            <div style="display:grid;grid-template-columns:repeat(10,1fr);gap:8px;max-width:300px">
+              <sc-for list="{{ eco }}" as="e" hint-placeholder-count="20">
+                <div style="aspect-ratio:1;border-radius:50%;background:{{ e.bg }};border:2px solid {{ e.border }}"></div>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;gap:var(--space-4);font-size:13px">
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent-2-600)"></i>Com coordenada <strong>13</strong></span>
+              <span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;border:2px solid var(--color-accent-700)"></i>Sem coordenada <strong>7</strong></span>
+            </div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Distância</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--font-heading);font-size:48px;line-height:1">473</span><span class="text-muted" style="font-size:13px">hexágonos</span></div>
+            <p class="card-body" style="flex:0">ficam longe de qualquer ponto de descarte — cerca de 1 em cada 4 da cidade.</p>
+            <div style="height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:24.3%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3);background:var(--color-accent-200)">
+            <span class="tag tag-accent" style="align-self:flex-start;background:var(--color-bg)">Ressalva</span>
+            <span class="card-title" style="font-size:20px;color:var(--color-accent-900)">Nenhum local pode ser dado como aberto hoje</span>
+            <p class="card-body" style="opacity:1;color:var(--color-accent-900)">Nenhuma das três listas tem data de verificação.</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabFeiras }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Feiras e orçamento</h2>
+          <p class="text-muted" style="margin:0">Quando a cidade gera mais resíduo de feira, e quanto custa limpá-la.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 18 e 19</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Feiras e mercados</span>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">17</div><div class="text-muted" style="font-size:13px">feiras</div></div>
+              <div><div style="font-family:var(--font-heading);font-size:40px;line-height:1">6</div><div class="text-muted" style="font-size:13px">mercados públicos</div></div>
+            </div>
+            <span class="card-title" style="font-size:18px;padding-top:var(--space-2)">Pico de quinta a sábado</span>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px">
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;background:color-mix(in srgb,var(--color-text) 8%,transparent)">Seg</span>
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;background:color-mix(in srgb,var(--color-text) 8%,transparent)">Ter</span>
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;background:color-mix(in srgb,var(--color-text) 8%,transparent)">Qua</span>
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;font-weight:700;background:var(--color-accent);color:var(--color-bg)">Qui</span>
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;font-weight:700;background:var(--color-accent);color:var(--color-bg)">Sex</span>
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;font-weight:700;background:var(--color-accent);color:var(--color-bg)">Sáb</span>
+              <span style="text-align:center;padding:10px 0;border-radius:999px;font-size:13px;background:color-mix(in srgb,var(--color-text) 8%,transparent)">Dom</span>
+            </div>
+            <p class="card-body">Até 14 feiras abertas no mesmo dia.</p>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Orçamento 2024 · limpeza urbana</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--font-heading);font-size:48px;line-height:1">R$ 309,3 mi</span></div>
+            <span class="tag tag-neutral" style="align-self:flex-start">Valor previsto, não gasto realizado</span>
+            <div style="display:flex;flex-direction:column;gap:8px;padding:var(--space-4);border-radius:var(--radius-lg);background:var(--color-bg);margin-top:var(--space-2)">
+              <div style="display:flex;justify-content:space-between;align-items:baseline;font-size:14px"><span>Se ganharmos <strong>{{ effLabel }}</strong> de eficiência</span></div>
+              <input type="range" min="1" max="15" step="1" value="{{ eff }}" onChange="{{ setEff }}" style="width:100%"></input>
+              <div style="display:flex;align-items:baseline;gap:8px"><span class="text-muted" style="font-size:13px">economia estimada</span><span style="font-family:var(--font-heading);font-size:28px;color:var(--color-accent-2-700)">{{ savingLabel }}</span></div>
+              <span class="text-muted" style="font-size:12px">Cada 1% ≈ R$ 3,1 milhões</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ tabCobertura }}" hint-placeholder-val="{{ false }}">
+      <section style="display:flex;flex-direction:column;gap:var(--space-4)">
+        <div style="display:flex;flex-direction:column;gap:6px;max-width:720px">
+          <h2 style="margin:0">Cobertura e prioridade</h2>
+          <p class="text-muted" style="margin:0">Quem reclama, quem não reclama, e se um modelo de prioridade ajuda.</p>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="tag tag-neutral" style="align-self:flex-start">Fonte: notebooks 23 e 25</span></sc-if>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:var(--space-4)">
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Carência × reclamação</span>
+            <span class="card-title" style="font-size:20px">Bairros mais carentes não reclamam mais</span>
+            <div style="display:flex;flex-direction:column;gap:6px;padding-top:var(--space-3)">
+              <div style="position:relative;height:14px;border-radius:999px;background:linear-gradient(90deg,var(--color-accent-2-300),var(--color-neutral-200) 50%,var(--color-accent-300))">
+                <div style="position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--color-neutral-500)"></div>
+                <div style="position:absolute;left:54%;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--color-accent-700);border:3px solid var(--color-surface)"></div>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px" class="text-muted"><span>−1</span><span>0 · sem relação</span><span>+1</span></div>
+            </div>
+            <p class="card-body">Correlação de <strong>0,08</strong>: praticamente nenhuma.</p>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Áreas silenciosas</span>
+            <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--font-heading);font-size:48px;line-height:1">64</span><span class="text-muted" style="font-size:13px">áreas</span></div>
+            <p class="card-body" style="flex:0">com muita carência e poucos chamados. Podem ser lugares onde as pessoas reclamam pouco.</p>
+            <span class="tag tag-accent" style="align-self:flex-start">Hipótese, não prova de lixo</span>
+          </div>
+          <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+            <span class="card-kicker">Acerto nos chamados de 2026</span>
+            <span class="card-title" style="font-size:20px">O histórico ainda prevê melhor</span>
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:4px 10px;font-size:13px"><span>Ruas com mais histórico</span><strong style="text-align:right">34,3%</strong><div style="grid-column:1/-1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:34.3%;height:100%;border-radius:999px;background:var(--color-accent-2-700)"></div></div></div>
+              <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:4px 10px;font-size:13px"><span>Pontuação de prioridade</span><strong style="text-align:right">22,4%</strong><div style="grid-column:1/-1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:22.4%;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div>
+            </div>
+            <p class="card-body">A pontuação organiza prioridades, mas não substitui o histórico.</p>
+          </div>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;app&quot;],&quot;default&quot;:&quot;login&quot;,&quot;tsType&quot;:&quot;'login'|'app'&quot;},&quot;defaultRole&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;gestor&quot;,&quot;cidadao&quot;],&quot;default&quot;:&quot;gestor&quot;,&quot;tsType&quot;:&quot;'gestor'|'cidadao'&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: this.props.startScreen ?? 'login',
+    role: this.props.defaultRole ?? 'gestor',
+    email: '', senha: '', error: '', tab: 'resumo', eff: 1, exported: false
+  };
+  go(tab) { return (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ tab }); }; }
+  renderVals() {
+    const s = this.state;
+    const isGestor = s.role === 'gestor';
+    const T = [
+      ['resumo', 'Visão geral'], ['territorio', 'Território'], ['central', 'Central 156'],
+      ['agua', 'Água e rios'], ['morros', 'Morros'], ['coleta', 'Coleta e redes'],
+      ['descarte', 'Descarte'], ['feiras', 'Feiras e orçamento'], ['cobertura', 'Cobertura']
+    ];
+    const tabs = T.map(([id, label]) => {
+      const on = s.tab === id;
+      return {
+        label, onClick: this.go(id),
+        bg: on ? 'var(--color-text)' : 'transparent',
+        fg: on ? 'var(--color-bg)' : 'var(--color-text)',
+        border: on ? 'var(--color-text)' : 'var(--color-divider)'
+      };
+    });
+    const name = (s.email.split('@')[0] || (isGestor ? 'gestor' : 'cidadao'));
+    const saving = (s.eff * 3.1).toFixed(1).replace('.', ',');
+    return {
+      isLogin: s.screen === 'login', isApp: s.screen === 'app',
+      isGestor, isCidadao: !isGestor,
+      roleLabel: isGestor ? 'Gestor' : 'Cidadão',
+      roleHint: isGestor ? 'Acesso completo, com fontes técnicas e exportação.' : 'Visualização dos dados públicos da cidade.',
+      pickGestor: () => this.setState(st => ({ role: 'gestor', error: '', email: st.demo ? 'gestor@exemplo.com' : st.email })),
+      pickCidadao: () => this.setState(st => ({ role: 'cidadao', error: '', email: st.demo ? 'cidadao@exemplo.com' : st.email })),
+      email: s.email, senha: s.senha,
+      setEmail: (e) => this.setState({ email: e.target.value, demo: false, error: '' }),
+      setSenha: (e) => this.setState({ senha: e.target.value, error: '' }),
+      hasError: !!s.error, error: s.error,
+      fillDemo: () => this.setState({ email: isGestor ? 'gestor@exemplo.com' : 'cidadao@exemplo.com', senha: 'demo1234', demo: true, error: '' }),
+      submit: (e) => {
+        e.preventDefault();
+        if (!/^\S+@\S+\.\S+$/.test(s.email)) return this.setState({ error: 'Informe um e-mail válido.' });
+        if (s.senha.length < 4) return this.setState({ error: 'A senha precisa ter ao menos 4 caracteres.' });
+        this.setState({ screen: 'app', tab: 'resumo', error: '' });
+      },
+      logout: () => this.setState({ screen: 'login', senha: '', exported: false }),
+      userName: name, initial: name.charAt(0).toUpperCase(),
+      exportLabel: s.exported ? 'Relatório gerado ✓' : 'Exportar relatório',
+      exportar: () => this.setState({ exported: true }),
+      tabs,
+      tabResumo: s.tab === 'resumo', tabTerritorio: s.tab === 'territorio', tabCentral: s.tab === 'central',
+      tabAgua: s.tab === 'agua', tabMorros: s.tab === 'morros', tabColeta: s.tab === 'coleta',
+      tabDescarte: s.tab === 'descarte', tabFeiras: s.tab === 'feiras', tabCobertura: s.tab === 'cobertura',
+      goResumo: this.go('resumo'), goTerritorio: this.go('territorio'), goCentral: this.go('central'),
+      goAgua: this.go('agua'), goMorros: this.go('morros'), goColeta: this.go('coleta'),
+      goDescarte: this.go('descarte'), goFeiras: this.go('feiras'), goCobertura: this.go('cobertura'),
+      waffle: Array.from({ length: 100 }, (_, i) => ({ bg: i < 13 ? 'var(--color-accent-2-700)' : 'var(--color-accent-2-200)' })),
+      eco: Array.from({ length: 20 }, (_, i) => i < 13
+        ? { bg: 'var(--color-accent-2-600)', border: 'var(--color-accent-2-600)' }
+        : { bg: 'transparent', border: 'var(--color-accent-700)' }),
+      eff: s.eff, effLabel: s.eff + '%', savingLabel: 'R$ ' + saving + ' mi',
+      setEff: (e) => this.setState({ eff: Number(e.target.value) })
+    };
+  }
+}
+</script>
+</body>
+</html>

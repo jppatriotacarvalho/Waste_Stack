@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>/* WasteStack: bibliotecas do runtime servidas localmente (mesmas versões do design) */window.__resources={"https://unpkg.com/react@18.3.1/umd/react.production.min.js":"vendor/react.production.min.js","https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js":"vendor/react-dom.production.min.js","https://unpkg.com/@babel/standalone@7.29.0/babel.min.js":"vendor/babel.min.js"};</script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="_ds/organic-54d87b73-db22-44c3-860e-abe238760f8a/styles.css">
+<script src="_ds/organic-54d87b73-db22-44c3-860e-abe238760f8a/_ds_bundle.js"></script>
+<style>
+body{margin:0;background:var(--color-bg)}
+a{color:var(--color-accent-700)}a:hover{color:var(--color-accent-800)}
+input[type=range]{accent-color:var(--color-accent)}
+</style>
+</helmet>
+
+<sc-if value="{{ isLogin }}" hint-placeholder-val="{{ true }}">
+<div data-screen-label="01 Login" style="min-height:100vh;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));background:var(--color-bg)">
+  <div style="position:relative;overflow:hidden;background:var(--color-accent-2-700);color:var(--color-bg);padding:calc(var(--space-8)*1.5);display:flex;flex-direction:column;justify-content:space-between;gap:var(--space-8);min-height:420px">
+    <div style="position:absolute;width:420px;height:420px;border-radius:50%;background:var(--color-accent-2-600);right:-140px;top:-120px"></div>
+    <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:var(--color-accent);right:-60px;bottom:-70px"></div>
+    <div style="position:absolute;width:64px;height:64px;border-radius:50%;background:var(--color-accent-300);right:150px;bottom:40px"></div>
+    <div style="position:relative;display:flex;align-items:center;gap:10px">
+      <div style="width:36px;height:36px;border-radius:50%;background:var(--color-bg);display:grid;place-items:center">
+        <div style="width:14px;height:14px;border-radius:50%;background:var(--color-accent)"></div>
+      </div>
+      <span style="font-family:var(--font-heading);font-size:20px">Recife em Dados</span>
+    </div>
+    <div style="position:relative;z-index:1;max-width:440px;margin-bottom:var(--space-8)">
+      <h1 style="font-size:48px;margin:0 0 var(--space-3);text-wrap:pretty">Dados públicos que se explicam sozinhos.</h1>
+      <p style="font-size:17px;margin:0;opacity:.92;text-wrap:pretty">Em vez de planilhas, gráficos prontos sobre limpeza urbana, drenagem e território do Recife.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;align-items:center;padding:calc(var(--space-8)*1.5)">
+    <form onSubmit="{{ submit }}" style="width:100%;max-width:400px;display:flex;flex-direction:column;gap:var(--space-4)">
+      <div>
+        <h2 style="margin:0 0 6px">Entrar</h2>
+        <p class="text-muted" style="margin:0">Escolha seu perfil de acesso.</p>
+      </div>
+      <div class="seg" style="display:flex">
+        <label class="seg-opt" style="flex:1;justify-content:center;padding:10px 12px;font-size:14px"><input type="radio" name="perfil" checked="{{ isGestor }}" onChange="{{ pickGestor }}"></input>Gestor</label>
+        <label class="seg-opt" style="flex:1;justify-content:center;padding:10px 12px;font-size:14px"><input type="radio" name="perfil" checked="{{ isCidadao }}" onChange="{{ pickCidadao }}"></input>Cidadão</label>
+      </div>
+      <p class="text-muted" style="margin:-6px 0 0;font-size:13px">{{ roleHint }}</p>
+      <div class="field">
+        <label for="email">E-mail</label>
+        <input id="email" class="input" type="email" placeholder="seu@email.com" value="{{ email }}" onChange="{{ setEmail }}" style="min-height:44px"></input>
+      </div>
+      <div class="field">
+        <label for="senha">Senha</label>
+        <input id="senha" class="input" type="password" placeholder="••••••••" value="{{ senha }}" onChange="{{ setSenha }}" style="min-height:44px"></input>
+      </div>
+      <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+        <div class="tag tag-accent" style="font-size:13px;padding:8px 14px;align-self:flex-start">{{ error }}</div>
+      </sc-if>
+      <div style="display:flex;flex-direction:column;gap:var(--space-2)">
+        <button type="submit" class="btn btn-primary" style="min-height:46px;font-size:16px">Entrar como {{ roleLabel }}</button>
+        <button type="button" class="btn btn-ghost" onClick="{{ fillDemo }}" style="align-self:flex-start;white-space:nowrap">Usar acesso de demonstração</button>
+      </div>
+    </form>
+  </div>
+</div>
+</sc-if>
+
+<sc-if value="{{ isApp }}" hint-placeholder-val="{{ false }}">
+<div data-screen-label="02 Dados públicos" style="min-height:100vh;display:grid;grid-template-columns:248px minmax(0,1fr);background:var(--color-bg)">
+
+  <aside style="position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:var(--space-6);padding:var(--space-6) var(--space-4);background:var(--color-surface)">
+    <div style="display:flex;align-items:center;gap:10px;padding:0 6px">
+      <div style="width:32px;height:32px;border-radius:50%;background:var(--color-accent-2-700);display:grid;place-items:center">
+        <div style="width:12px;height:12px;border-radius:50%;background:var(--color-accent-300)"></div>
+      </div>
+      <span style="font-family:var(--font-heading);font-size:18px">Recife em Dados</span>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:4px">
+      <span style="font-size:11px;letter-spacing:.08em;text-transform:uppercase;padding:0 12px 6px" class="text-muted">Páginas</span>
+      <a href="#" onClick="{{ goResumo }}" aria-current="page" style="display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:999px;background:var(--color-accent);color:var(--color-bg);text-decoration:none;font-weight:600;font-size:14px">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v16a2 2 0 0 0 2 2h16"></path><path d="M18 17V9"></path><path d="M13 17V5"></path><path d="M8 17v-3"></path></svg>
+        Dados públicos
+      </a>
+    </nav>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:var(--space-3);padding:var(--space-3);border-radius:var(--radius-lg);background:var(--color-bg)">
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="width:36px;height:36px;border-radius:50%;background:var(--color-accent-200);color:var(--color-accent-800);display:grid;place-items:center;font-weight:700">{{ initial }}</div>
+        <div style="display:flex;flex-direction:column;min-width:0">
+          <span style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis">{{ userName }}</span>
+          <span class="text-muted" style="font-size:12px">{{ roleLabel }}</span>
+        </div>
+      </div>
+      <button class="btn btn-secondary" onClick="{{ logout }}" style="justify-content:flex-start">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><path d="m16 17 5-5-5-5"></path><path d="M21 12H9"></path></svg>
+        Sair
+      </button>
+    </div>
+  </aside>
+
+  <main style="min-width:0;padding:var(--space-8) calc(var(--space-8)*1.25) calc(var(--space-8)*2);display:flex;flex-direction:column;gap:var(--space-6)">
+    <header style="display:flex;flex-wrap:wrap;align-items:flex-end;gap:var(--space-4)">
+      <div style="flex:1 1 420px;max-width:760px">
+        <span class="tag tag-accent-2">Dados públicos · Recife · 2014–2026</span>
+        <h1 style="margin:var(--space-3) 0 var(--space-2);text-wrap:pretty">O que os dados dizem sobre a limpeza da cidade</h1>
+        <p class="text-muted" style="margin:0;font-size:16px;text-wrap:pretty">Os principais achados de prefeitura, IBGE, Central 156 e Defesa Civil, numa só tela.</p>
+      </div>
+      <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}">
+        <button class="btn btn-secondary" onClick="{{ exportar }}" style="white-space:nowrap">{{ exportLabel }}</button>
+      </sc-if>
+    </header>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-2)">
+      <span class="tag tag-neutral" style="font-size:12px;padding:5px 12px">94 bairros</span>
+      <span class="tag tag-neutral" style="font-size:12px;padding:5px 12px">1.488.920 moradores · Censo 2022</span>
+      <span class="tag tag-neutral" style="font-size:12px;padding:5px 12px">1.943 hexágonos de ~0,1 km²</span>
+      <span class="tag tag-neutral" style="font-size:12px;padding:5px 12px">Central 156: jan/2024 – jun/2026</span>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-4)">
+      <div class="card" style="flex:1 1 200px;padding:var(--space-6);gap:6px;background:var(--color-accent-2-800);color:var(--color-bg)"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">61.790</span><span style="font-size:14px;font-weight:600">chamados de lixo, vias e drenagem</span><span style="font-size:12px;opacity:.85">26,8% das 230.491 demandas do 156</span></div>
+      <div class="card" style="flex:1 1 200px;padding:var(--space-6);gap:6px"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">93,4%</span><span style="font-size:14px;font-weight:600">caem em ruas reincidentes</span><span style="font-size:12px;" class="text-muted">chamados de 2026 em ruas que já tinham chamado</span></div>
+      <div class="card" style="flex:1 1 200px;padding:var(--space-6);gap:6px"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">9.955</span><span style="font-size:14px;font-weight:600">pedidos de drenagem na fila</span><span style="font-size:12px;" class="text-muted">7.343 parados desde 2024–2025, sem movimento</span></div>
+      <div class="card" style="flex:1 1 200px;padding:var(--space-6);gap:6px"><span style="font-family:var(--font-heading);font-size:40px;line-height:1">R$ 309,3 mi</span><span style="font-size:14px;font-weight:600">previstos para limpeza em 2024</span><span style="font-size:12px;" class="text-muted">cada 1% de eficiência ≈ R$ 3,1 mi</span></div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-4)">
+      <div class="card" style="flex:2 1 520px;padding:var(--space-6);gap:var(--space-3)">
+        <span class="card-kicker">Central 156 · atendimento</span>
+        <span class="card-title" style="font-size:22px">Drenagem tem menos chamados, mas demora 11× mais que lixo</span>
+        <div style="display:grid;grid-template-columns:120px minmax(0,1fr) minmax(0,1fr);gap:16px 18px;align-items:center;font-size:13px;padding-top:var(--space-2)">
+          <span></span><span class="text-muted" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase">Chamados</span><span class="text-muted" style="font-size:11px;letter-spacing:.08em;text-transform:uppercase">Mediana de atendimento</span>
+          <span style="font-weight:600">Lixo e descarte</span>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:100%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div><strong style="width:50px;text-align:right">29.874</strong></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:8.8%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-400)"></div></div><strong style="width:56px;text-align:right">8 dias</strong></div>
+          <span style="font-weight:600">Limpeza de vias</span>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:66.3%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div><strong style="width:50px;text-align:right">19.816</strong></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:59.3%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div><strong style="width:56px;text-align:right">54 dias</strong></div>
+          <span style="font-weight:600">Drenagem</span>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:40.5%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div><strong style="width:50px;text-align:right">12.100</strong></div>
+          <div style="display:flex;align-items:center;gap:8px"><div style="flex:1;height:14px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:100%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-700)"></div></div><strong style="width:56px;text-align:right">91 dias</strong></div>
+        </div>
+        <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 12 e 21</span></sc-if>
+      </div>
+      <div class="card" style="flex:1 1 300px;padding:var(--space-6);gap:var(--space-3)">
+        <span class="card-kicker">Central 156 · recorrência</span>
+        <span class="card-title" style="font-size:22px">O problema volta ao mesmo lugar</span>
+        <div style="display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap">
+          <div style="width:140px;height:140px;flex:none;border-radius:50%;background:conic-gradient(var(--color-accent) 0 93.4%,var(--color-accent-200) 0);display:grid;place-items:center">
+            <div style="width:92px;height:92px;border-radius:50%;background:var(--color-surface);display:grid;place-items:center;font-family:var(--font-heading);font-size:24px">93,4%</div>
+          </div>
+          <div style="flex:1 1 120px;display:flex;flex-direction:column;gap:4px">
+            <span style="font-family:var(--font-heading);font-size:32px;line-height:1">88 ruas</span>
+            <span class="text-muted" style="font-size:13px">tiveram chamado em 20 ou mais dos 25 meses</span>
+          </div>
+        </div>
+        <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 12 e 21</span></sc-if>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-4)">
+      <div class="card" style="flex:2 1 520px;padding:var(--space-6);gap:var(--space-3)">
+        <span class="card-kicker">Lacunas de serviço</span>
+        <span class="card-title" style="font-size:22px">Onde a cidade não é atendida</span>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Faces de quadra sem galeria registrada<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Território</span></span><strong style="text-align:right">69%</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:69%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Hexágonos urbanos da RPA 3 sem drenagem cadastrada<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Redes</span></span><strong style="text-align:right">56%</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:56%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Demandas abertas em dia sem coleta (dias alternados)<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Coleta</span></span><strong style="text-align:right">50,6%</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:50.6%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Hexágonos sem coleta seletiva<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Coleta</span></span><strong style="text-align:right">47,7%</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:47.7%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Comunidades de Interesse Social com déficit de coleta (2014)<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Comunidades</span></span><strong style="text-align:right">211 / 545</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:38.7%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Faces de quadra com limpeza mensal ou nenhuma<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Território</span></span><strong style="text-align:right">28%</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:28%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+          <div style="display:grid;grid-template-columns:minmax(0,1fr) 56px;gap:5px 10px;font-size:13px"><span style="display:flex;flex-wrap:wrap;align-items:center;gap:8px">Hexágonos longe de qualquer ponto de descarte<span class="tag tag-neutral" style="font-size:10px;padding:1px 8px">Descarte</span></span><strong style="text-align:right">473</strong><div style="grid-column:1/-1;display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:24.3%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div></div>
+        </div>
+        <span class="text-muted" style="font-size:12px">Cada barra tem sua própria base (faces de quadra, hexágonos, demandas ou comunidades).</span>
+        <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 10, 16, 17 e 24</span></sc-if>
+      </div>
+      <div style="flex:1 1 300px;display:flex;flex-direction:column;gap:var(--space-4)">
+        <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+          <span class="card-kicker">Drenagem · 19/06/2026</span>
+          <span class="card-title" style="font-size:20px">3 em cada 4 pedidos estão parados</span>
+          <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px"><div style="width:26.2%;background:var(--color-accent)"></div><div style="width:73.8%;background:var(--color-accent-800)"></div></div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:13px"><span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent)"></i>Abertos <strong>2.612</strong></span><span style="display:flex;align-items:center;gap:6px"><i style="width:10px;height:10px;border-radius:50%;background:var(--color-accent-800)"></i>Parados, sem movimento <strong>7.343</strong></span></div>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 12 e 21</span></sc-if>
+        </div>
+        <div class="card" style="padding:var(--space-6);gap:var(--space-3)">
+          <span class="card-kicker">Defesa Civil · 2023–2024</span>
+          <span class="card-title" style="font-size:20px">90% das 163 mil ações foram no morro</span>
+          <div style="height:28px;border-radius:999px;display:flex;overflow:hidden;gap:3px"><div style="width:90%;background:var(--color-accent-2-700)"></div><div style="width:10%;background:var(--color-neutral-400)"></div></div>
+          <div style="display:flex;flex-wrap:wrap;gap:var(--space-4);font-size:13px"><span style="white-space:nowrap"><strong>864</strong> ruas em risco R4</span><span style="white-space:nowrap"><strong>6,9 mi m²</strong> de lona</span></div>
+          <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 15 e 22</span></sc-if>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-wrap:wrap;gap:var(--space-4)">
+      <div class="card" style="flex:1 1 300px;padding:var(--space-6);gap:var(--space-3)">
+        <span class="card-kicker">Onde descartar</span>
+        <span class="card-title" style="font-size:20px">Reciclável tem 106 locais; lâmpada e remédio, só 1</span>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:grid;grid-template-columns:100px minmax(0,1fr) 32px;align-items:center;gap:10px;font-size:13px"><span>Recicláveis</span><div style="display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:57.6%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-2-600)"></div></div></div><strong style="text-align:right">106</strong></div>
+          <div style="display:grid;grid-template-columns:100px minmax(0,1fr) 32px;align-items:center;gap:10px;font-size:13px"><span>Entulho</span><div style="display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:10.9%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div><strong style="text-align:right">20</strong></div>
+          <div style="display:grid;grid-template-columns:100px minmax(0,1fr) 32px;align-items:center;gap:10px;font-size:13px"><span>Pilhas</span><div style="display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:2.7%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent)"></div></div></div><strong style="text-align:right">5</strong></div>
+          <div style="display:grid;grid-template-columns:100px minmax(0,1fr) 32px;align-items:center;gap:10px;font-size:13px"><span>Lâmpadas</span><div style="display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:0.5%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-700)"></div></div></div><strong style="text-align:right">1</strong></div>
+          <div style="display:grid;grid-template-columns:100px minmax(0,1fr) 32px;align-items:center;gap:10px;font-size:13px"><span>Medicamentos</span><div style="display:flex"><div style="flex:1;height:12px;border-radius:999px;background:color-mix(in srgb,var(--color-text) 8%,transparent)"><div style="width:0.5%;min-width:8px;height:100%;border-radius:999px;background:var(--color-accent-700)"></div></div></div><strong style="text-align:right">1</strong></div>
+        </div>
+        <span class="text-muted" style="font-size:12px">De 184 locais nas três listas públicas.</span>
+        <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 14 e 24</span></sc-if>
+      </div>
+      <div class="card" style="flex:1 1 300px;padding:var(--space-6);gap:var(--space-3)">
+        <span class="card-kicker">Prioridade</span>
+        <span class="card-title" style="font-size:20px">O histórico ainda acerta mais que o modelo</span>
+        <div style="display:flex;align-items:flex-end;gap:var(--space-6);height:150px;padding-top:var(--space-2)">
+          <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:6px"><strong style="font-family:var(--font-heading);font-size:24px;font-weight:400">34,3%</strong><div style="flex:none;height:110px;border-radius:var(--radius-md) var(--radius-md) 8px 8px;background:var(--color-accent-2-700)"></div></div>
+          <div style="flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;gap:6px"><strong style="font-family:var(--font-heading);font-size:24px;font-weight:400">22,4%</strong><div style="flex:none;height:72px;border-radius:var(--radius-md) var(--radius-md) 8px 8px;background:var(--color-accent)"></div></div>
+        </div>
+        <div style="display:flex;gap:var(--space-6);font-size:13px"><span style="flex:1">Ruas com mais histórico</span><span style="flex:1">Pontuação de prioridade</span></div>
+        <span class="text-muted" style="font-size:12px">Acerto nos chamados de 2026.</span>
+        <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 23 e 25</span></sc-if>
+      </div>
+      <div class="card" style="flex:1 1 300px;padding:var(--space-6);gap:var(--space-3)">
+        <span class="card-kicker">Carência × reclamação</span>
+        <span class="card-title" style="font-size:20px">Quem mais precisa não reclama mais</span>
+        <div style="display:flex;flex-direction:column;gap:6px;padding-top:var(--space-3)">
+          <div style="position:relative;height:14px;border-radius:999px;background:linear-gradient(90deg,var(--color-accent-2-300),var(--color-neutral-200) 50%,var(--color-accent-300))">
+            <div style="position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--color-neutral-500)"></div>
+            <div style="position:absolute;left:54%;top:50%;width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;background:var(--color-accent-700);border:3px solid var(--color-surface)"></div>
+          </div>
+          <div class="text-muted" style="display:flex;justify-content:space-between;font-size:12px"><span>−1</span><span>0 · sem relação</span><span>+1</span></div>
+        </div>
+        <p class="card-body" style="flex:0;margin:0">Correlação de <strong>0,08</strong> entre carência do bairro e chamados no 156.</p>
+        <div style="display:flex;align-items:baseline;gap:8px;padding-top:var(--space-2)"><span style="font-family:var(--font-heading);font-size:32px;line-height:1">64</span><span class="text-muted" style="font-size:13px">áreas com muita carência e poucos chamados</span></div>
+        <sc-if value="{{ isGestor }}" hint-placeholder-val="{{ true }}"><span class="card-meta">Fonte: notebooks 23 e 25</span></sc-if>
+      </div>
+    </div>
+
+    <div class="card" style="padding:var(--space-6);gap:var(--space-4);background:var(--color-accent-200)">
+      <span class="card-title" style="font-size:20px;color:var(--color-accent-900)">Leia com cuidado</span>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:var(--space-4);font-size:13px;color:var(--color-accent-900)">
+        <div style="display:flex;flex-direction:column;gap:4px"><strong>Não é mapa de alagamento</strong><span>A Defesa Civil registrou alagamento só 203 vezes, em 17 dias.</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><strong>Locais de descarte sem verificação</strong><span>Nenhuma lista tem data; 7 das 20 ecoestações não têm coordenada.</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><strong>Orçamento previsto</strong><span>R$ 309,3 mi é o valor previsto, não o gasto realizado.</span></div>
+        <div style="display:flex;flex-direction:column;gap:4px"><strong>Áreas silenciosas são hipótese</strong><span>As 64 áreas indicam onde se reclama pouco, não prova de lixo.</span></div>
+      </div>
+    </div>
+  </main>
+</div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;startScreen&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;login&quot;,&quot;app&quot;],&quot;default&quot;:&quot;login&quot;,&quot;tsType&quot;:&quot;'login'|'app'&quot;},&quot;defaultRole&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;gestor&quot;,&quot;cidadao&quot;],&quot;default&quot;:&quot;gestor&quot;,&quot;tsType&quot;:&quot;'gestor'|'cidadao'&quot;}}">
+class Component extends DCLogic {
+  state = {
+    screen: this.props.startScreen ?? 'login',
+    role: this.props.defaultRole ?? 'gestor',
+    email: '', senha: '', error: '', tab: 'resumo', eff: 1, exported: false
+  };
+  go(tab) { return (e) => { if (e && e.preventDefault) e.preventDefault(); this.setState({ tab }); }; }
+  renderVals() {
+    const s = this.state;
+    const isGestor = s.role === 'gestor';
+    const T = [
+      ['resumo', 'Visão geral'], ['territorio', 'Território'], ['central', 'Central 156'],
+      ['agua', 'Água e rios'], ['morros', 'Morros'], ['coleta', 'Coleta e redes'],
+      ['descarte', 'Descarte'], ['feiras', 'Feiras e orçamento'], ['cobertura', 'Cobertura']
+    ];
+    const tabs = T.map(([id, label]) => {
+      const on = s.tab === id;
+      return {
+        label, onClick: this.go(id),
+        bg: on ? 'var(--color-text)' : 'transparent',
+        fg: on ? 'var(--color-bg)' : 'var(--color-text)',
+        border: on ? 'var(--color-text)' : 'var(--color-divider)'
+      };
+    });
+    const name = (s.email.split('@')[0] || (isGestor ? 'gestor' : 'cidadao'));
+    const saving = (s.eff * 3.1).toFixed(1).replace('.', ',');
+    return {
+      isLogin: s.screen === 'login', isApp: s.screen === 'app',
+      isGestor, isCidadao: !isGestor,
+      roleLabel: isGestor ? 'Gestor' : 'Cidadão',
+      roleHint: isGestor ? 'Acesso completo, com fontes técnicas e exportação.' : 'Visualização dos dados públicos da cidade.',
+      pickGestor: () => this.setState(st => ({ role: 'gestor', error: '', email: st.demo ? 'gestor@exemplo.com' : st.email })),
+      pickCidadao: () => this.setState(st => ({ role: 'cidadao', error: '', email: st.demo ? 'cidadao@exemplo.com' : st.email })),
+      email: s.email, senha: s.senha,
+      setEmail: (e) => this.setState({ email: e.target.value, demo: false, error: '' }),
+      setSenha: (e) => this.setState({ senha: e.target.value, error: '' }),
+      hasError: !!s.error, error: s.error,
+      fillDemo: () => this.setState({ email: isGestor ? 'gestor@exemplo.com' : 'cidadao@exemplo.com', senha: 'demo1234', demo: true, error: '' }),
+      submit: (e) => {
+        e.preventDefault();
+        if (!/^\S+@\S+\.\S+$/.test(s.email)) return this.setState({ error: 'Informe um e-mail válido.' });
+        if (s.senha.length < 4) return this.setState({ error: 'A senha precisa ter ao menos 4 caracteres.' });
+        this.setState({ screen: 'app', tab: 'resumo', error: '' });
+      },
+      logout: () => this.setState({ screen: 'login', senha: '', exported: false }),
+      userName: name, initial: name.charAt(0).toUpperCase(),
+      exportLabel: s.exported ? 'Relatório gerado ✓' : 'Exportar relatório',
+      exportar: () => this.setState({ exported: true }),
+      tabs,
+      tabResumo: s.tab === 'resumo', tabTerritorio: s.tab === 'territorio', tabCentral: s.tab === 'central',
+      tabAgua: s.tab === 'agua', tabMorros: s.tab === 'morros', tabColeta: s.tab === 'coleta',
+      tabDescarte: s.tab === 'descarte', tabFeiras: s.tab === 'feiras', tabCobertura: s.tab === 'cobertura',
+      goResumo: this.go('resumo'), goTerritorio: this.go('territorio'), goCentral: this.go('central'),
+      goAgua: this.go('agua'), goMorros: this.go('morros'), goColeta: this.go('coleta'),
+      goDescarte: this.go('descarte'), goFeiras: this.go('feiras'), goCobertura: this.go('cobertura'),
+      waffle: Array.from({ length: 100 }, (_, i) => ({ bg: i < 13 ? 'var(--color-accent-2-700)' : 'var(--color-accent-2-200)' })),
+      eco: Array.from({ length: 20 }, (_, i) => i < 13
+        ? { bg: 'var(--color-accent-2-600)', border: 'var(--color-accent-2-600)' }
+        : { bg: 'transparent', border: 'var(--color-accent-700)' }),
+      eff: s.eff, effLabel: s.eff + '%', savingLabel: 'R$ ' + saving + ' mi',
+      setEff: (e) => this.setState({ eff: Number(e.target.value) })
+    };
+  }
+}
+</script>
+</body>
+</html>
