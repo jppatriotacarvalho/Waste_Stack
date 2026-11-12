@@ -1,0 +1,15 @@
+# Dependências mínimas para rodar o pipeline, a aplicação e os testes (usadas no Docker).
+# O requirements.txt completo inclui também as ferramentas de desenvolvimento (Jupyter, Playwright, matplotlib).
+pandas>=2.2
+pyarrow>=15
+duckdb>=1.0
+geopandas>=0.14
+pyogrio>=0.7
+shapely>=2.0
+pyproj>=3.6
+h3>=4.0
+openpyxl>=3.1
+fastapi>=0.115
+uvicorn>=0.30
+httpx>=0.28
+pytest>=8

@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.ipynb_checkpoints/
+
+# Camadas geradas pelo pipeline (recriadas pelos notebooks)
+data/silver/*
+data/gold/*
+!data/silver/.gitkeep
+!data/gold/.gitkeep
+
+# Bronze bruto com dado pessoal (antes da limpeza): nunca vai para o Git.
+# Só a versão limpa (sem a coluna ou com hash) entra em data/bronze/<dataset>/.
+data/bronze/_restrito/
+
+# Sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Sessões locais, eventos, senhas de demonstração e evidências de testes
+data/operacional/
+data/validacao/
+.pytest_cache/
+test-results/
+
+# Documentos do projeto ficam na pasta de documentos, n�o no reposit�rio
+Claude outputs/
