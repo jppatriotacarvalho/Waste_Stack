@@ -1,0 +1,69 @@
+{
+  "registrado_em": "2026-11-11T14:20:28-03:00",
+  "arquivo_original": "C:\\Users\\joaop\\Downloads\\PE_Municipios_2025.zip",
+  "arquivo_bronze": "data/bronze/limite_municipal/2026-11-11/PE_Municipios_2025.zip",
+  "fonte": "https://geoftp.ibge.gov.br/organizacao_do_territorio/malhas_territoriais/malhas_municipais/municipio_2025/UFs/PE/",
+  "recurso": "PE_Municipios_2025.zip",
+  "recebido_em": "2026-11-11",
+  "periodo_referencia": "edicao 2025",
+  "ultima_consulta_fonte": "2026-11-11",
+  "atualizacao_informada_fonte": "2026-02-26 17:02 (listagem FTP; fuso nao informado)",
+  "transformacoes_entrada": "nenhuma; ZIP e nome original preservados",
+  "triagem_privacidade": "esquema territorial sem identificadores de pessoas; contatos de metadados vazios",
+  "municipio_identificado": {
+    "CD_MUN": "2611606",
+    "NM_MUN": "Recife",
+    "SIGLA_UF": "PE",
+    "linhas_correspondentes": 1
+  },
+  "status": "recebimento conferido; geometria do Recife separada e comparada aos 94 bairros; notebook 10 parcial",
+  "pendencias": [
+    "Consulta integral da nota metodologica IBGE continua pendente (403); pagina oficial de apresentacao consultada.",
+    "Interpretar diferencas de borda antes de fixar cobertura H3 ou rejeicao de coordenadas.",
+    "Completar demais entidades e grade H3 do notebook 10."
+  ],
+  "md5": "5b07a3a8f3beb8c66845435927767f37",
+  "sha256": "534bc4d7a146a37c579d688bf75f5b19250070531d675c575a40943ede0d2cb8",
+  "bytes": 1869450,
+  "codificacao": "UTF-8",
+  "separador": null,
+  "campos": [
+    "CD_MUN",
+    "NM_MUN",
+    "CD_RGI",
+    "NM_RGI",
+    "CD_RGINT",
+    "NM_RGINT",
+    "CD_UF",
+    "NM_UF",
+    "SIGLA_UF",
+    "CD_REGIAO",
+    "NM_REGIAO",
+    "SIGLA_RG",
+    "CD_CONCURB",
+    "NM_CONCURB",
+    "AREA_KM2"
+  ],
+  "linhas_de_dados": 185,
+  "colunas": 15,
+  "membro_shapefile": "PE_Municipios_2025.shp",
+  "membros_zip": [
+    "PE_Municipios_2025.shx",
+    "PE_Municipios_2025.shp",
+    "PE_Municipios_2025.qmd",
+    "PE_Municipios_2025.prj",
+    "PE_Municipios_2025.dbf",
+    "PE_Municipios_2025.cpg",
+    "LEIA-ME.txt"
+  ],
+  "crs_wkt": "GEOGCS[\"GCS_SIRGAS_2000\",DATUM[\"D_SIRGAS_2000\",SPHEROID[\"GRS_1980\",6378137.0,298.257222101]],PRIMEM[\"Greenwich\",0.0],UNIT[\"Degree\",0.0174532925199433]]",
+  "atualizado_em": "2026-11-11T14:29:16-03:00",
+  "autorizacao_instalacao": "Equipe autorizou neste chat a instalacao na pasta local do projeto, em .venv ignorada pelo Git.",
+  "resultado_comparacao": "data/silver/validacao_contorno.json",
+  "metodologia_ibge": {
+    "pagina_apresentacao": "https://www.ibge.gov.br/geociencias/organizacao-do-territorio/malhas-territoriais/15774-malhas.html",
+    "publicacao_indicada": "https://biblioteca.ibge.gov.br/index.php/biblioteca-catalogo?view=detalhes&id=2102268",
+    "consulta_integral": "pendente: servidor retornou 403",
+    "data_consulta": "2026-11-11"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "registrado_em": "2026-11-11",
+  "arquivo_bronze": "data/bronze/pequenos_volumes/2026-11-11/lista-apoio-ecoestacoes.csv",
+  "origem": "estruturação da tabela das 17 ecoestações da análise do dataset 5 (pasta 10)",
+  "md5": "a825dba35ff713ec8a049c73630773d3",
+  "sha256": "2f918c8db2dffa4bc9650430b0326dd813704aecfd75467fd22707b3f383b4b7",
+  "bytes": 4102,
+  "linhas_de_dados": 17,
+  "colunas": 11,
+  "codificacao": "utf-8",
+  "separador": ";",
+  "periodo_referencia": "lista levantada em fontes públicas até jul/2026 (segundo a análise); não é a rede vigente confirmada",
+  "transformacoes_entrada": "transcrição da tabela do documento; nenhuma coordenada acrescentada",
+  "acesso": "pipeline"
+}
