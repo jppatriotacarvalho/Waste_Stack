@@ -1,0 +1,27 @@
+{
+  "_leia": "Pesos e limiares PROVISÓRIOS de teste (autorizados em 11/11/2026 para revisão). Não são política operacional aprovada nem previsão comprovada. Edite aqui ou no Painel do Gestor.",
+  "cenario_ativo": "equilibrado",
+  "limiar_fila": 50,
+  "capacidade_dia": 30,
+  "fator_zona_silencio": 1.15,
+  "cenarios": {
+    "equilibrado": {
+      "descricao": "Equilibra demanda (histórico do 156 + reportes do app) e risco (vulnerabilidade + exposição).",
+      "morro":      {"reincidencia": 0.30, "app": 0.20, "vulnerabilidade": 0.20, "exposicao": 0.20, "contexto": 0.10},
+      "planicie":   {"reincidencia": 0.30, "app": 0.20, "vulnerabilidade": 0.15, "exposicao": 0.25, "contexto": 0.10},
+      "indefinido": {"reincidencia": 0.30, "app": 0.20, "vulnerabilidade": 0.20, "exposicao": 0.20, "contexto": 0.10}
+    },
+    "mais_demanda": {
+      "descricao": "Dá mais peso ao que já foi registrado (histórico e app). Tende a repetir o viés de quem reclama mais.",
+      "morro":      {"reincidencia": 0.45, "app": 0.25, "vulnerabilidade": 0.10, "exposicao": 0.10, "contexto": 0.10},
+      "planicie":   {"reincidencia": 0.45, "app": 0.25, "vulnerabilidade": 0.10, "exposicao": 0.10, "contexto": 0.10},
+      "indefinido": {"reincidencia": 0.45, "app": 0.25, "vulnerabilidade": 0.10, "exposicao": 0.10, "contexto": 0.10}
+    },
+    "mais_risco": {
+      "descricao": "Dá mais peso à carência estrutural e à exposição (encosta no morro, beira de rio na planície).",
+      "morro":      {"reincidencia": 0.20, "app": 0.15, "vulnerabilidade": 0.25, "exposicao": 0.30, "contexto": 0.10},
+      "planicie":   {"reincidencia": 0.20, "app": 0.15, "vulnerabilidade": 0.20, "exposicao": 0.35, "contexto": 0.10},
+      "indefinido": {"reincidencia": 0.20, "app": 0.15, "vulnerabilidade": 0.25, "exposicao": 0.30, "contexto": 0.10}
+    }
+  }
+}
