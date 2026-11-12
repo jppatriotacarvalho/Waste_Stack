@@ -27,5 +27,5 @@ data/validacao/
 .pytest_cache/
 test-results/
 
-# Documentos do projeto ficam na pasta de documentos, n„o no repositÛrio
+# Documentos do projeto ficam na pasta de documentos, n√£o no reposit√≥rio
 Claude outputs/
