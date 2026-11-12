@@ -1,0 +1,35 @@
+# WasteStack — demonstração local com Docker.
+#   docker compose up --build                  # aplicação em http://127.0.0.1:8156 (só nesta máquina)
+#   docker compose --profile pipeline run --rm pipeline   # refaz Bronze -> Silver -> Gold -> validação
+#   docker compose --profile testes run --rm testes       # testes da API
+# As pastas data/ e notebooks/ do repositório são montadas: o que o pipeline gera fica no seu computador.
+services:
+  app:
+    build: .
+    image: wastestack:local
+    container_name: wastestack-app
+    ports:
+      - "127.0.0.1:8156:8156"   # publicado só no próprio computador; nada fica exposto na rede
+    volumes:
+      - ./data:/app/data
+      - ./config:/app/config
+    environment:
+      WASTESTACK_HOST: 0.0.0.0
+    restart: unless-stopped
+
+  pipeline:
+    image: wastestack:local
+    build: .
+    profiles: ["pipeline"]
+    volumes:
+      - ./data:/app/data
+      - ./notebooks:/app/notebooks
+    command: ["python", "pipeline/executar.py"]
+
+  testes:
+    image: wastestack:local
+    build: .
+    profiles: ["testes"]
+    volumes:
+      - ./data:/app/data
+    command: ["python", "-m", "pytest", "tests", "-q", "-p", "no:cacheprovider"]
